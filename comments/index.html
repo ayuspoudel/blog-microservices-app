@@ -1,0 +1,59 @@
+<!-- SCCM Deployment Logical Architecture Diagram (HTML using mermaid.js) -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SCCM Deployment Architecture</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+</head>
+<body>
+  <pre class="mermaid">
+    graph TD
+  subgraph AWS_Eyefinity_Prod_Account
+    AD[Active Directory Domain Services]
+    SQL[SQL Server]
+    WSUS[WSUS Server]
+    SCCM[SCCM Primary Site Server]
+    DP[Distribution Point]
+    MP[Management Point]
+    SUP[Software Update Point]
+    RSP[Reporting Services Point]
+    SCP[Service Connection Point]
+  end
+
+  subgraph Clients
+    Client1[Client 1]
+    Client2[Client 2]
+    ClientN[Client N]
+  end
+
+  subgraph Other_AWS_Accounts
+    AccountA[Cross-Account EC2 Instances]
+  end
+
+  AD --> SCCM
+  SCCM --> SQL
+  SCCM --> WSUS
+  SCCM --> MP
+  SCCM --> DP
+  SCCM --> SUP
+  SCCM --> RSP
+  SCCM --> SCP
+
+  MP --> Client1
+  MP --> Client2
+  MP --> ClientN
+
+  DP --> Client1
+  DP --> Client2
+  DP --> ClientN
+
+  SCCM -.-> AccountA
+  MP --> AccountA
+  DP --> AccountA
+
+  </pre>
+</body>
+</html>
